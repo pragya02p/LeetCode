@@ -1,0 +1,27 @@
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        DIRECTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        ROWS, COLS = len(grid), len(grid[0])
+
+        def maxAreaOfIslandHelper(row, col):
+            if (
+                not 0 <= row <= ROWS - 1
+                or not 0 <= col <= COLS - 1
+                or grid[row][col] == 0
+            ):
+                return 0
+
+            grid[row][col] = 0
+            cur_area = 0
+            for d_row, d_col in DIRECTIONS:
+                cur_area += maxAreaOfIslandHelper(row + d_row, col + d_col)
+
+            return 1 + cur_area
+
+        max_area = 0
+        for row in range(ROWS):
+            for col in range(COLS):
+                max_area = max(max_area, maxAreaOfIslandHelper(row, col))
+
+        return max_area
+        
